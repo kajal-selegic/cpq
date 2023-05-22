@@ -1,0 +1,126 @@
+<template>
+  <div class="container">
+    <template if:false={showAppProductPage}>
+
+      <div class="slds-page-header">
+        <div class="slds-page-header__row">
+          <div class="slds-page-header__col-title">
+            <div class="slds-media">
+              <div class="slds-media__figure">
+                <lightning-icon icon-name="standard:opportunity" alternative-text="Account" title="Account">
+                </lightning-icon>
+              </div>
+              <div class="slds-media__body">
+                <div class="slds-page-header__name">
+                  <div class="slds-page-header__name-title">
+                    <h1>
+                      <span class="slds-page-header__title">
+                        Edit Quote
+                        <lightning-button-menu menu-alignment="right" icon-name="utility:down"
+                          class="slds-m-left_xx-large" variant="bare" style="margin-left: 5px;">
+                          <lightning-menu-item value="Quote" label="Quote"></lightning-menu-item>
+                          <lightning-menu-item value="Opportunity" label="Opportunity"></lightning-menu-item>
+                        </lightning-button-menu>
+                      </span>
+                    </h1>
+                  </div>
+                </div>
+                <p class="slds-page-header__name-meta">Name • {quoteName}</p>
+              </div>
+              <div class="slds-page-header__col-actions">
+                <div class="slds-page-header__controls">
+                  <div class="slds-page-header__control">
+                    <ul class="slds-button-group-list">
+                      <li style="margin-left: 10px;">
+                        <button class="slds-button slds-button_neutral" onclick={handleShowAddProducts}>Add
+                          Product</button>
+                      </li>
+                      <li style="margin-left: 10px;">
+                        <button class="slds-button slds-button_neutral">Current Products</button>
+                      </li>
+                      <li style="margin-left: 10px;">
+                        <lightning-button-menu alternative-text="Show menu" menu-alignment="right"
+                          icon-name="utility:down">
+                          <lightning-menu-item value="Quote" label="More"></lightning-menu-item>
+                        </lightning-button-menu>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <lightning-card>
+        <div class="slds-scrollable" style="height: 350px;">
+          <table class="slds-table slds-table_cell-buffer slds-table_bordered" aria-label="Example default base table">
+            <thead>
+              <tr class="slds-line-height_reset">
+                <th class="" scope="col">
+                  <div class="slds-truncate">Product</div>
+                </th>
+                <th class="" scope="col">
+                  <div class="slds-truncate">Quantity</div>
+                </th>
+                <th class="" scope="col">
+                  <div class="slds-truncate">Net Total Price</div>
+                </th>
+                <th class="" scope="col">
+                  <div class="slds-truncate">Net Unit Price</div>
+                </th>
+                <th class="" scope="col">
+                  <div class="slds-truncate">List Price</div>
+                </th>
+                <th class="" scope="col">
+                  <div class="slds-truncate">Monthly Price</div>
+                </th>
+                <th class="" scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <template for:each={dataWrapper} for:item="lineItem" for:index="index">
+                <tr key={lineItem.Id}>
+                  <td data-label="Product">
+                    <div class="slds-truncate" style="min-width: 150px;">
+
+                      <span style="visibility: hidden;">{lineItem.leftSpace}</span>
+
+                      <template if:true={lineItem.iconName}>
+                        <lightning-button-icon icon-name={lineItem.iconName} variant="bare" data-id={lineItem.Id}
+                          onclick={handleProductOptions}></lightning-button-icon>
+                      </template>
+                      &nbsp;
+                      <a tabindex="-1">{lineItem.ProductId__r.Name}</a>
+                      <template if:true={lineItem.isMain}>
+                        <lightning-button-icon icon-name="utility:custom_apps" variant="bare" data-id={lineItem.Id}
+                          class="slds-float_right"></lightning-button-icon>
+                      </template>
+
+                    </div>
+                  </td>
+                  <td data-label="Quantity">{lineItem.quantity}</td>
+                  <td data-label="Net Total Price"></td>
+                  <td data-label="Net Unit Price"></td>
+                  <td data-label="List Price"></td>
+                  <td data-label="Monthly Price"></td>
+                  <td>
+                    <template if:true={lineItem.isMain}>
+                      <lightning-button-icon icon-name="utility:delete" variant="bare" data-id={lineItem.Id}
+                        onclick={handleDeleteProduct}></lightning-button-icon>
+                    </template>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </lightning-card>
+
+    </template>
+    <template if:true={showAppProductPage}>
+      <c-add-products-in-quote quote-name={quoteName} onselect={handleAddProducts}></c-add-products-in-quote>
+    </template>
+  </div>
+</template>

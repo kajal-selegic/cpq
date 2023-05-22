@@ -1,0 +1,100 @@
+<template>
+    <div class="container">
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+              <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                  <div class="slds-media__figure">
+                    <lightning-icon icon-name="standard:opportunity" alternative-text="Account" title="Account"></lightning-icon>
+                  </div>
+                  <div class="slds-media__body">
+                    <div class="slds-page-header__name">
+                      <div class="slds-page-header__name-title">
+                        <h1>
+                            <span class="slds-page-header__title">
+                                Product Selection
+                                <lightning-button-menu menu-alignment="right" icon-name="utility:down" class="slds-m-left_xx-large" variant="bare" style="margin-left: 5px;">
+                                    <lightning-menu-item value="Quote" label="Quote"></lightning-menu-item>
+                                    <lightning-menu-item value="Opportunity" label="Opportunity"></lightning-menu-item>
+                                </lightning-button-menu>
+                            </span>
+                        </h1>
+                      </div>
+                    </div>
+                    <p class="slds-page-header__name-meta">Name • {quoteName}</p>
+                  </div>
+                  <div class="slds-page-header__col-actions">
+                    <div class="slds-page-header__controls">
+                      <div class="slds-page-header__control">
+                        <ul class="slds-button-group-list">
+                          <li style="margin-left: 10px;">
+                            <input class="slds-input product-name" onkeypress={refreshProducts}></input>
+                          </li>
+                          <li>
+                            <lightning-button-icon icon-name="utility:search" onclick={searchProducts}></lightning-button-icon>
+                          </li>
+                          <!-- <li style="margin-left: 10px;">
+                            <button class="slds-button slds-button_neutral" onclick={handleSelect}>Select</button>
+                          </li> -->
+                          <li style="margin-left: 10px;">
+                            <button class="slds-button slds-button_neutral" onclick={handleSelect}>Cancel</button>
+                          </li>
+                          <li style="margin-left: 10px;">
+                            <lightning-button-menu alternative-text="Show menu"  menu-alignment="right" icon-name="utility:down">
+                                <lightning-menu-item value="Quote" label="More"></lightning-menu-item>
+                            </lightning-button-menu>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="slds-scrollable" style="height: 350px;">
+          <table class="slds-table slds-table_cell-buffer slds-table_bordered" aria-label="Example default base table">
+            <thead>
+              <tr class="slds-line-height_reset">
+                <th class="" scope="col" style="width: 20px;"></th>
+                <th class="" scope="col">
+                  <div class="slds-truncate">Product Code</div>
+                </th>
+                <th class="" scope="col">
+                  <div class="slds-truncate">Product Name</div>
+                </th>
+                <th class="" scope="col">
+                  <div class="slds-truncate">Product Description</div>
+                </th>
+                <th class="" scope="col">
+                  <div class="slds-truncate">List Price</div>
+                </th>
+                <th class="" scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <template for:each={visibleProducts} for:item="product" for:index="index">
+                <tr key={product.Id}>
+                  <td data-label="Product">
+                    <div class="slds-truncate">
+                      <input type="checkbox" name="options" class="slds-checkbox"/>
+                    </div>
+                  </td>
+                  <td data-label="Product Code">{product.ProductCode}</td>
+                  <td data-label="Product Name">{product.Name}</td>
+                  <td data-label="Product Description" style="max-width:300px; overflow:hidden">{product.Description}</td>
+                  <td data-label="List Price"></td>
+                  <td data-label="Configure">
+                    <lightning-button-icon icon-name="utility:add" variant="bare" data-id={product.Id} onclick={configProduct}></lightning-button-icon>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+        <div slot="footer" class="slds-var-m-vertical_medium">
+          <c-pagination records={productList} onupdate={updateProductHandler}></c-pagination>
+      </div>
+    </div>
+</template>
